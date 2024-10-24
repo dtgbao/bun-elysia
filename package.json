@@ -1,15 +1,23 @@
 {
-  "name": "app",
-  "version": "1.0.50",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "bun run --watch src/index.ts"
-  },
-  "dependencies": {
-    "elysia": "latest"
-  },
-  "devDependencies": {
-    "bun-types": "latest"
-  },
-  "module": "src/index.js"
+	"name": "app",
+	"version": "1.0.50",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"dev": "bun run --watch src/index.ts",
+		"start": "bun run src/index.ts",
+		"db:push": "bun run --bun drizzle-kit push",
+		"db:generate": "bun run --bun drizzle-kit generate",
+		"db:migrate": "bun run src/db/migrate.ts"
+	},
+	"dependencies": {
+		"@elysiajs/swagger": "^1.1.5",
+		"drizzle-orm": "^0.35.3",
+		"elysia": "latest",
+		"postgres": "^3.4.4"
+	},
+	"devDependencies": {
+		"bun-types": "latest",
+		"drizzle-kit": "^0.26.2"
+	},
+	"module": "src/index.js"
 }
