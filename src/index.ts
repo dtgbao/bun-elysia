@@ -1,7 +1,7 @@
 import { Elysia, t } from "elysia";
 import { swagger } from "@elysiajs/swagger";
-import { userRoutes } from "./features/users/user-router";
-import { postRoutes } from "./features/posts/post-router";
+import { userRoutes } from "./features/users/user.router";
+import { postRoutes } from "./features/posts/post.router";
 
 const app = new Elysia()
 	.use(

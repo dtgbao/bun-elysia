@@ -1,5 +1,5 @@
 import Elysia, { t } from "elysia";
-import { insertPost, updatePost } from "./post-service";
+import { insertPost, updatePost } from "./post.service";
 
 export const postRoutes = new Elysia({ prefix: "/post" })
 	.post(

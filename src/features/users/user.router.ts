@@ -1,7 +1,14 @@
 import Elysia, { t } from "elysia";
-import { getUserWithPosts, insertUser, deleteUser } from "./user-service";
+import {
+	getUserWithPosts,
+	insertUser,
+	deleteUser,
+	getAllUsers,
+} from "./user.service";
+import { createUserDto } from "./user.dto";
 
 export const userRoutes = new Elysia({ prefix: "/user" })
+	.get("/", () => getAllUsers())
 	.get("/:id/posts", ({ params: { id } }) => getUserWithPosts(id), {
 		params: t.Object({ id: t.Numeric() }),
 	})
@@ -10,13 +17,9 @@ export const userRoutes = new Elysia({ prefix: "/user" })
 		({ body: { firstName, lastName, email } }) =>
 			insertUser({ firstName, lastName, email }),
 		{
-			body: t.Object({
-				firstName: t.String(),
-				lastName: t.String(),
-				email: t.String(),
-			}),
+			body: createUserDto,
 		}
 	)
-	.delete("/", ({ body: { id } }) => deleteUser(id), {
-		body: t.Object({ id: t.Numeric() }),
+	.delete("/:id", ({ params: { id } }) => deleteUser(id), {
+		params: t.Object({ id: t.Numeric() }),
 	});
