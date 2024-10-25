@@ -1,7 +1,8 @@
-import { Elysia, t } from "elysia";
+import { Elysia } from "elysia";
 import { swagger } from "@elysiajs/swagger";
 import { userRoutes } from "./features/users/user.router";
 import { postRoutes } from "./features/posts/post.router";
+import { authRoutes } from "./features/auth/auth.router";
 
 const app = new Elysia()
 	.use(
@@ -15,7 +16,7 @@ const app = new Elysia()
 			},
 		})
 	)
-	.group("/api", (app) => app.use(userRoutes).use(postRoutes))
-	.listen(process.env.PORT ?? 3000);
+	.group("/api", (app) => app.use(authRoutes).use(userRoutes).use(postRoutes))
+	.listen(Bun.env.PORT ?? 8000);
 
 console.log(`🦊 Elysia is running at ${app.server?.url}`);

@@ -1,18 +1,23 @@
 import { integer, pgTable, text } from "drizzle-orm/pg-core";
-import { timestamps } from "../../utils/columns.helper";
-import { generateUniqueString } from "../../utils/helpers";
-import { usersTable } from "./users";
+import { createId } from "@paralleldrive/cuid2";
+import { timestamps } from "../columns.helper";
+import { users } from "./users";
+import { relations } from "drizzle-orm";
 
-export const postsTable = pgTable("posts", {
+export const posts = pgTable("posts", {
 	id: integer().primaryKey().generatedAlwaysAsIdentity(),
-	slug: text().$default(() => generateUniqueString(16)),
-	title: text("title").notNull(),
-	content: text("content").notNull(),
-	userId: integer("user_id")
+	slug: text().$default(() => createId()),
+	title: text().notNull(),
+	content: text().notNull(),
+	userId: integer()
 		.notNull()
-		.references(() => usersTable.id, { onDelete: "cascade" }),
+		.references(() => users.id, { onDelete: "cascade" }),
 	...timestamps,
 });
 
-export type InsertPost = typeof postsTable.$inferInsert;
-export type SelectPost = typeof postsTable.$inferSelect;
+export const postsRelations = relations(posts, ({ one }) => ({
+	user: one(users, {
+		fields: [posts.userId],
+		references: [users.id],
+	}),
+}));
