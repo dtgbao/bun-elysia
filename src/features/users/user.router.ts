@@ -2,10 +2,15 @@ import Elysia, { t } from "elysia";
 import {
 	insertUser,
 	deleteUser,
-	getAllUsers,
+	findUsers,
 	getUserWithPostById,
 } from "./user.service";
-import { createUserDto, selectUser, selectUserWithPost } from "./user.model";
+import {
+	createUserDto,
+	filterUser,
+	selectUser,
+	selectUserWithPost,
+} from "./user.model";
 import {
 	errorResponse,
 	HttpStatusCode,
@@ -17,8 +22,9 @@ export const userRoutes = new Elysia({
 	detail: { tags: ["User"] },
 })
 	.use(getUserSession)
-	.get("/", () => getAllUsers(), {
+	.get("/", ({ query }) => findUsers(query), {
 		response: t.Array(selectUser),
+		query: t.Partial(filterUser),
 	})
 	.get(
 		"/:id/posts",

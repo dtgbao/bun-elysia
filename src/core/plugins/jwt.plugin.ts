@@ -4,6 +4,6 @@ import Elysia, { t } from "elysia";
 export const jwtPlugin = new Elysia().use(
 	jwt({
 		name: "jwt",
-		secret: "secret",
+		secret: Bun.env.JWT_SECRET ?? "secret",
 	})
 );

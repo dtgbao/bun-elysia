@@ -21,6 +21,13 @@ const _insertUserSchema = createInsertSchema(users, {
 });
 const _selectUserSchema = createSelectSchema(users);
 
+export const createUserDto = t.Pick(_insertUserSchema, [
+	"firstName",
+	"lastName",
+	"age",
+	"email",
+	"gender",
+]);
 export const selectUser = t.Omit(_selectUserSchema, ["deletedAt"]);
 export const selectUserWithPost = t.Composite([
 	selectUser,
@@ -31,14 +38,6 @@ export const filterUser = t.Composite([
 	t.Object({
 		name: t.String({ minLength: 1 }),
 	}),
-]);
-
-export const createUserDto = t.Pick(_insertUserSchema, [
-	"firstName",
-	"lastName",
-	"age",
-	"email",
-	"gender",
 ]);
 
 export type CreateUserDto = Static<typeof createUserDto>;

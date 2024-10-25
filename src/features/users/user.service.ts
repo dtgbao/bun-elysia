@@ -1,4 +1,4 @@
-import { eq, ilike, or, SQL } from "drizzle-orm";
+import { and, eq, ilike, or, SQL } from "drizzle-orm";
 import { db } from "../../db";
 import { users } from "../../db/schemas/users";
 import { CreateUserDto, FilterUser } from "./user.model";
@@ -6,10 +6,6 @@ import { CreateUserDto, FilterUser } from "./user.model";
 export async function insertUser(data: CreateUserDto) {
 	const [insertedUser] = await db.insert(users).values(data).returning();
 	return insertedUser;
-}
-
-export async function getAllUsers() {
-	return await db.select().from(users);
 }
 
 export async function getUserWithPostById(id: number) {
@@ -26,14 +22,29 @@ export async function getUserWithPostById(id: number) {
 	});
 }
 
-export async function getUser(filterData: Partial<FilterUser>) {
+export async function getUser(params: Partial<{ email: string; id: number }>) {
 	const filters: SQL[] = [];
-	if (filterData.email) filters.push(eq(users.email, filterData.email));
+	if (params.email) filters.push(eq(users.email, params.email));
+	if (params.id) filters.push(eq(users.id, params.id));
+
+	return await db.query.users.findFirst({
+		where: and(...filters),
+	});
+}
+
+export async function findUsers(filterData: Partial<FilterUser>) {
+	const filters: SQL[] = [];
+	if (filterData.email) {
+		filters.push(ilike(users.email, `%${filterData.email}%`));
+	}
 	if (filterData.name) {
 		filters.push(ilike(users.firstName, `%${filterData.name}%`));
 		filters.push(ilike(users.lastName, `%${filterData.name}%`));
 	}
-	return await db.query.users.findFirst({
+	if (filterData.gender) {
+		filters.push(eq(users.gender, filterData.gender));
+	}
+	return await db.query.users.findMany({
 		where: or(...filters),
 	});
 }
