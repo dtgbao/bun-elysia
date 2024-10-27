@@ -7,7 +7,8 @@
 		"start": "bun run src/index.ts",
 		"db:push": "bun run --bun drizzle-kit push",
 		"db:generate": "bun run --bun drizzle-kit generate",
-		"db:migrate": "bun run src/db/migrate.ts"
+		"db:migrate": "bun run src/db/migrate.ts",
+		"compile:binary": "bun build --compile --minify-whitespace --minify-syntax --target bun --outfile server src/index.ts "
 	},
 	"dependencies": {
 		"@elysiajs/cors": "^1.1.1",
