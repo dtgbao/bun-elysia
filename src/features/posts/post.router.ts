@@ -1,13 +1,13 @@
 import Elysia, { t } from "elysia";
 import { insertPost, updatePost } from "./post.service";
 import { createPostDto, updatePostDto } from "./post.model";
-import { getUserSession } from "../auth/auth.service";
+import { requireAuth } from "../auth/auth.service";
 
 export const postRoutes = new Elysia({
 	prefix: "/post",
 	detail: { tags: ["Post"] },
 })
-	.use(getUserSession)
+	.use(requireAuth)
 	.post(
 		"/",
 		({ body: { title, content }, user }) =>

@@ -15,13 +15,13 @@ import {
 	errorResponse,
 	HttpStatusCode,
 } from "../../core/models/response.model";
-import { getUserSession } from "../auth/auth.service";
+import { requireAuth } from "../auth/auth.service";
 
 export const userRoutes = new Elysia({
 	prefix: "/user",
 	detail: { tags: ["User"] },
 })
-	.use(getUserSession)
+	.use(requireAuth)
 	.get("/", ({ query }) => findUsers(query), {
 		response: t.Array(selectUser),
 		query: t.Partial(filterUser),
