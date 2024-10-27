@@ -11,10 +11,9 @@ export const authRoutes = new Elysia({ prefix: "/auth", tags: ["Auth"] })
 	.post(
 		"/sign-in",
 		async ({ store }) => {
-			console.log(store.token);
 			return {
-				accessToken: store.token.accessToken!,
-				refreshToken: store.token.refreshToken!,
+				accessToken: store.session.accessToken!,
+				refreshToken: store.session.refreshToken!,
 			};
 		},
 		{
@@ -24,10 +23,9 @@ export const authRoutes = new Elysia({ prefix: "/auth", tags: ["Auth"] })
 	.post(
 		"/refresh",
 		async ({ store }) => {
-			console.log(store.token);
 			return {
-				accessToken: store.token.accessToken!,
-				refreshToken: store.token.refreshToken!,
+				accessToken: store.session.accessToken!,
+				refreshToken: store.session.refreshToken!,
 			};
 		},
 		{

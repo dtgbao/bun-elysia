@@ -8,7 +8,7 @@ export const authService = new Elysia({ name: "auth/service" })
 	.use(jwtPlugin)
 	.state({
 		user: {} as Partial<AuthUser>,
-		token: {} as Partial<{ accessToken: string; refreshToken: string }>,
+		session: {} as Partial<{ accessToken: string; refreshToken: string }>,
 	})
 	.macro(({ onBeforeHandle }) => ({
 		isAuth(enabled: boolean) {
@@ -69,7 +69,7 @@ export const authService = new Elysia({ name: "auth/service" })
 						httpOnly: true,
 						maxAge: 5 * 60, // 5 minutes,
 					});
-					store.token = {
+					store.session = {
 						accessToken: _aid.value,
 						refreshToken: _rid.value,
 					};
@@ -92,4 +92,4 @@ export const refreshTokens = new Elysia()
 		as: "scoped",
 		refreshToken: true,
 	})
-	.resolve({ as: "scoped" }, ({ store }) => ({ token: store.token }));
+	.resolve({ as: "scoped" }, ({ store }) => ({ session: store.session }));
